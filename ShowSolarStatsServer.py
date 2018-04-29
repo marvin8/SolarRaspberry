@@ -42,7 +42,6 @@ class DisplayServer(rpyc.Service):
 		pass
 
 	def on_connect(self):
-		print("Connected")
 		pass
 
 	def on_disconnect(self):
@@ -51,9 +50,7 @@ class DisplayServer(rpyc.Service):
 		pass
 
 	def exposed_update_stats(self, stats):
-		print("Disply to be updated with stats: ", stats)
 		self.display.update(stats)
-		print("Disply updated!")
 
 
 if __name__ == "__main__":
