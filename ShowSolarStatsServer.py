@@ -45,8 +45,6 @@ class DisplayServer(rpyc.Service):
 		pass
 
 	def on_disconnect(self):
-#		self.display.close()
-		print("Disconnceted")
 		pass
 
 	def exposed_update_stats(self, stats):
