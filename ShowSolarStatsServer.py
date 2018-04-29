@@ -1,11 +1,15 @@
 #!/usr/bin/env python3
 
+import argparse
 import pifacecommon
 import pifacecad
-from threading import Barrier
-
 import rpyc
 from rpyc.utils.server import ThreadedServer
+
+parser = argparse.ArgumentParser(description="Display Server to accept solar data from client to show on display")
+parser.add_argument("--port", action="store", default="8000", type=int)
+args = parser.parse_args()
+
 
 class StatsDisplay(object):
 	def __init__(self, cad):
@@ -54,8 +58,6 @@ class DisplayServer(rpyc.Service):
 
 if __name__ == "__main__":
 
-	hostPort = 8000
-
-	t = ThreadedServer(DisplayServer, port=hostPort)
+	t = ThreadedServer(DisplayServer, port=args.port)
 	t.start()
 
