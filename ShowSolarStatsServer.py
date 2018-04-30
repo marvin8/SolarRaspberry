@@ -4,7 +4,9 @@ import argparse
 import pifacecommon
 import pifacecad
 import rpyc
+from rpyc.utils.server import Server
 from rpyc.utils.server import ThreadedServer
+from rpyc.utils.server import ThreadPoolServer
 
 parser = argparse.ArgumentParser(description="Display Server to accept solar data from client to show on display")
 parser.add_argument("--port", action="store", default="8000", type=int)
@@ -12,6 +14,7 @@ args = parser.parse_args()
 
 
 class StatsDisplay(object):
+	
 	def __init__(self, cad):
 		self.cad = cad
 		self.cad.lcd.backlight_on()
@@ -34,9 +37,9 @@ class StatsDisplay(object):
 		self.cad.lcd.write("{power5min:>5} W".format(
 			power5min=self.stats['power5min']))
 
-class DisplayServer(rpyc.Service):
-
-	def __init__(self, service):
+class DisplayService(rpyc.Service):
+	
+	def __init__(self, conn):
 		self.cad=pifacecad.PiFaceCAD()
 		self.display = StatsDisplay(self.cad)
 		pass
@@ -53,6 +56,5 @@ class DisplayServer(rpyc.Service):
 
 if __name__ == "__main__":
 
-	t = ThreadedServer(DisplayServer, port=args.port)
-	t.start()
-
+	ThreadPoolServer(DisplayService, port=args.port, nbThreads=1).start()
+#	t = Server(DisplayServer, port=args.port)
