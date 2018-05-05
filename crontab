@@ -1,0 +1,1 @@
+@reboot		cd ~/wip/SolarRaspberry; /usr/bin/screen -S dispserv -fa -d -m ./runSolarStatsServer.sh 15m
